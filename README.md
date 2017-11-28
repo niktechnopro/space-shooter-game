@@ -3,7 +3,7 @@ A space shooter game developped with Python programming language and the PyGame 
 
 This is a shooter with scrolling background and mouse control
 
-the sprites were from 2 location which offer free resources:
+The sprites and sound effects downloaded from 2 location that offer free resources:
 
 https://kenney.nl/;
 
