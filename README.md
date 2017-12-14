@@ -1,5 +1,5 @@
-# shooter-game
-## A space shooter game developped with Python programming language and the PyGame module.
+# Space shooter game
+## A space shooter game developped with Python programming language and the PyGame library.
 
 ## It features mouse control and scrolling background
 
