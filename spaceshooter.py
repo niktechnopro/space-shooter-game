@@ -12,12 +12,16 @@ from pygame.constants import K_ESCAPE
 #initializing game engine
 pygame.init()
 
-
+bckg_y = 0 # initial position of the background
 text_color = (255, 255, 255) #define color with RGB
 BLACK = (0,0,0)
+YELLOW = (255,255,0)
 width = 800 # x size of the screen
 height = 800 # y size of the screen
 size = (width, height) # width and height tuple as python can not store 2 numbers into 1 variable
+font1 = pygame.font.Font('font/font.ttf', 40) #font
+font2 = pygame.font.Font('font/font.ttf', 20) #font
+font3 = pygame.font.Font('font/font.ttf', 15) #font
 screen = pygame.display.set_mode(size) #screen is going to be a Surface class
 pygame.display.set_caption("Space Shooter")#name of the window
 clock = pygame.time.Clock()#manages how fast screen updates
@@ -64,7 +68,19 @@ def beginning():
 	os.system("say 'three'")
 	os.system("say 'two'")
 	os.system("say 'one'")
-	os.system("say go")
+	os.system("say 'go'")
+
+#the following function would draw the text
+def print_text(msg, pos, _font, color = (0,0,0), bgcolor = (255,255,255)):
+	text = _font.render(msg, True, color)
+	screen.blit(text, pos)
+
+#first page
+def showIntro():
+	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color, BLACK)
+	print_text("PRESS SPACE TO START!", (235, 500), font2, YELLOW, BLACK)
+	print_text("Shoot as many enemy ships as you can", (140, 300), font2, YELLOW)
+	print_text("Press ESC to exit at any time", (400, 750), font3, text_color, BLACK)# these 2 lines display a text for wins in the right top side of screen
 
 def music_effect(effect):  #function to pull up sound effects
 	wins = 0
@@ -73,14 +89,49 @@ def music_effect(effect):  #function to pull up sound effects
 	elif effect == "explosion":
 		explosion.play() 
 
+#drawing and moving the background
+def moving_background(bckg_y):
+	rel_y = bckg_y % background.get_rect().height
+	screen.blit(background, [0, rel_y - background.get_rect().height])
+	if rel_y > 0:
+		screen.blit(background2,(0, rel_y))
+	bckg_y += 1
+
+def game_over():
+	# text = font.render("Game Over!", True, text_color)
+	# text_rect = text.get_rect()
+	# text_x = screen.get_width() / 2 - text_rect.width / 2
+	# text_y = screen.get_height() / 2 - text_rect.height / 2
+	print_text("Game Over!", (280, 400), font1, text_color)
+	# screen.blit(text, [text_x, text_y])
+	
+	# main_game(False)
+
+#First page loop
+intro = True
+while intro:
+	for event in pygame.event.get():
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_SPACE:
+				print "space was pressed"
+				intro = False
+			if event.key == pygame.K_ESCAPE:
+				quit()
+		elif event.type == pygame.QUIT:
+			quit()
+	# bgGen()
+	moving_background(bckg_y)
+	bckg_y += 1
+	showIntro()
+	pygame.display.flip()
+
 
 #Main Loop
 def main_game(val):
 #	variables used in this function
 	winings = 0
 	ships_missed = 0		
-	bckg_y = 0 
-	
+	bckg_y = 0
 	while val:
 		#main event loop
 		
@@ -103,11 +154,13 @@ def main_game(val):
 		
 	#	screen.blit(background, [0,0]):
 		#drawing and moving the background
-		rel_y = bckg_y % background.get_rect().height
-		screen.blit(background, [0, rel_y - background.get_rect().height])
-		if rel_y > 0:
-			screen.blit(background2,(0, rel_y))
+		moving_background(bckg_y)
 		bckg_y += 1
+		# rel_y = bckg_y % background.get_rect().height
+		# screen.blit(background, [0, rel_y - background.get_rect().height])
+		# if rel_y > 0:
+		# 	screen.blit(background2,(0, rel_y))
+		# bckg_y += 1
 
 		#screen.blit(player_ship, [x, y])
 		the_player.draw_me()
@@ -144,9 +197,6 @@ def main_game(val):
 			enemy_list.add((Enemies(screen, enemy_ship_selector())))
 			enemy_list.add((Enemies(screen, enemy_ship_selector())))
 		
-
-		
-
 		#ship_crash = groupcollide(player_group, enemy_list, True, True) #when enemy ship hits the player
 		#print ship_crash
 
@@ -167,15 +217,6 @@ def main_game(val):
 	
 	pygame.quit()
 
-def game_over():
-	text = font.render("Game Over! You missed an enemy ship", True, text_color)
-	text_rect = text.get_rect()
-	text_x = screen.get_width() / 2 - text_rect.width / 2
-	text_y = screen.get_height() / 2 - text_rect.height / 2
-	screen.blit(text, [text_x, text_y])
-
-
-	
 	
 """
 def main_menu():
