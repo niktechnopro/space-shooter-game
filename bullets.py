@@ -2,9 +2,10 @@ import pygame
 from pygame.sprite import Sprite
 
 class Bullet(Sprite):
-	def __init__(self,screen,the_player):
+	def __init__(self,screen,the_player, bullet):
 		super(Bullet, self).__init__()
-		self.image = pygame.image.load("images/spacebullet.png")
+		self.image = pygame.image.load(bullet)
+		self.image = pygame.transform.scale(self.image, (20,50))
 		self.screen = screen
 		self.speed = 15
 		self.x = the_player.x + 25
@@ -18,3 +19,8 @@ class Bullet(Sprite):
 
 	def draw_bullet(self):
 		self.screen.blit(self.image,[self.x,self.y])
+
+	def beyond_screen(self):
+		if self.y <= 0:
+			return True
+		return False

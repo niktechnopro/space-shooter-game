@@ -19,13 +19,13 @@ YELLOW = (255,255,0)
 width = 800 # x size of the screen
 height = 800 # y size of the screen
 size = (width, height) # width and height tuple as python can not store 2 numbers into 1 variable
+font = pygame.font.SysFont('Calibri', 25, True, False) #select font, and size of text
 font1 = pygame.font.Font('font/font.ttf', 40) #font
 font2 = pygame.font.Font('font/font.ttf', 20) #font
 font3 = pygame.font.Font('font/font.ttf', 15) #font
 screen = pygame.display.set_mode(size) #screen is going to be a Surface class
 pygame.display.set_caption("Space Shooter")#name of the window
 clock = pygame.time.Clock()#manages how fast screen updates
-font = pygame.font.SysFont('Calibri', 25, True, False) #select font, and size of text
 background = pygame.image.load("images/starBackground.png").convert() #convert is a method of image class
 background = pygame.transform.scale(background, (width,height)) #transforms small image to fit game window
 background2 = background #creating second background image
@@ -40,13 +40,13 @@ enemyShip2 = "images/enemyShip2.png"
 enemyShip3 = "images/enemyShip3.png"
 enemyShip4 = "images/enemyShip4.png"
 enemyShip5 = "images/enemyShip5.png"
+enemyShip6 = "images/enemyShip6.png"
 
 def enemy_ship_selector():
-	en_index = random.randint(0,4)
-	enemy_images_list = [enemyShip1, enemyShip2, enemyShip3, enemyShip4, enemyShip5]
+	en_index = random.randint(0,5)
+	enemy_images_list = [enemyShip1, enemyShip2, enemyShip3, enemyShip4, enemyShip5, enemyShip6]
 	enemy_ship_selector = enemy_images_list[en_index]
 	return enemy_ship_selector
-
 enemy_ship = Enemies(screen, enemy_ship_selector())
  #call function to select enemy ships combination
 enemy_list = Group() #creates list of sprites which is managed by class 'Group'
@@ -54,7 +54,19 @@ for i in range(random.randint(3, 9)):
 	 # this represents an enemy
 	enemy_list.add(enemy_ship)
 
-new_bullet = Bullet(screen, the_player)
+bullet_image = "images/spacebullet1.png"
+def bullet_selector(score):
+	if score < 10:
+		bullet_image = "images/spacebullet1.png"
+	elif score >=10 and score < 18:
+		bullet_image = "images/spacebullet2.png"
+	elif score >= 18 and score < 24:
+		bullet_image = "images/spacebullet3.png"
+	else:
+		bullet_image = "images/spacebullet4.png"
+	return bullet_image
+
+new_bullet = Bullet(screen, the_player, bullet_image)
 bullets = Group()
 
 
@@ -64,11 +76,11 @@ pygame.mixer.music.play(-1) #'-1' means play indefinetely
 blaster = pygame.mixer.Sound('sounds/blaster.wav')#using Sound class does not interrupt main music
 explosion = pygame.mixer.Sound('sounds/explosion.wav')
 
-def beginning():
-	os.system("say 'three'")
-	os.system("say 'two'")
-	os.system("say 'one'")
-	os.system("say 'go'")
+# def beginning():
+# 	os.system("say 'three'")
+# 	os.system("say 'two'")
+# 	os.system("say 'one'")
+# 	os.system("say 'go'")
 
 #the following function would draw the text
 def print_text(msg, pos, _font, color = (0,0,0), bgcolor = (255,255,255)):
@@ -97,16 +109,24 @@ def moving_background(bckg_y):
 		screen.blit(background2,(0, rel_y))
 	bckg_y += 1
 
-def game_over():
-	# text = font.render("Game Over!", True, text_color)
-	# text_rect = text.get_rect()
-	# text_x = screen.get_width() / 2 - text_rect.width / 2
-	# text_y = screen.get_height() / 2 - text_rect.height / 2
-	print_text("Game Over!", (280, 400), font1, text_color)
-	# screen.blit(text, [text_x, text_y])
-	
+def game_over(score):
+	bckg_y = 0
+	while True:
+		moving_background(bckg_y)
+		bckg_y += 1
+		for event in pygame.event.get():
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_ESCAPE:
+					quit()
+			elif event.type == pygame.QUIT:
+				quit()
+		print_text("Game Over!", (280, 400), font1, text_color)
+		print_text("Your Score: " + str(score), (332, 500), font2, text_color)
+		print_text("Press ESC to exit", (50, 50), font, text_color)
+		pygame.display.flip()
 	# main_game(False)
 
+	
 #First page loop
 intro = True
 while intro:
@@ -130,8 +150,8 @@ while intro:
 def main_game(val):
 #	variables used in this function
 	winings = 0
-	ships_missed = 0		
-	bckg_y = 0
+	ships_missed = 0
+	bckg_y = 0	
 	while val:
 		#main event loop
 		
@@ -144,7 +164,7 @@ def main_game(val):
 					sys.exit()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				music_effect("blaster")
-				new_bullet = Bullet(screen, the_player)
+				new_bullet = Bullet(screen, the_player, bullet_selector(winings))
 				bullets.add(new_bullet)
 		
 		#controling a spaceship via the mouse
@@ -156,12 +176,6 @@ def main_game(val):
 		#drawing and moving the background
 		moving_background(bckg_y)
 		bckg_y += 1
-		# rel_y = bckg_y % background.get_rect().height
-		# screen.blit(background, [0, rel_y - background.get_rect().height])
-		# if rel_y > 0:
-		# 	screen.blit(background2,(0, rel_y))
-		# bckg_y += 1
-
 		#screen.blit(player_ship, [x, y])
 		the_player.draw_me()
 		#screen.blit(enemy_ship, [100, 50])
@@ -182,9 +196,13 @@ def main_game(val):
 			bullet.update()
 			# draw the bullet on the screen
 			bullet.draw_bullet()
+			#remove bullet if beyond the screen
+			if bullet.beyond_screen():
+				bullets.remove(bullet)
+				print "bullet removed"
 
 
-
+		#enemy collision with bullet
 		bullet_hit = groupcollide(bullets, enemy_list, True, True) # when bullet hits the enemy
 		for bullet, enemy_ship in bullet_hit.iteritems():
 			print "explosion"
@@ -200,40 +218,18 @@ def main_game(val):
 		#ship_crash = groupcollide(player_group, enemy_list, True, True) #when enemy ship hits the player
 		#print ship_crash
 
-		text = font.render("Hits: " + str(winings), True, text_color)# these 2 lines display a text for wins in the right top side of screen
-		screen.blit(text, [600, 50])
+		print_text("Hits: " + str(winings), (600, 50), font, text_color)
 
-		text = font.render("Ships missed: " + str(ships_missed), True, text_color)# these 2 lines display a text for wins in the right top side of screen
-		screen.blit(text, [100, 50])
+		print_text("Ships missed: " + str(ships_missed), (100, 50), font, text_color)
 
-		text = font.render("Press ESC to exit at any time", True, text_color)# these 2 lines display a text for wins in the right top side of screen
-		screen.blit(text, [450, 750])
+		print_text("Press ESC to exit at any time", (450, 750), font, text_color)
 		
 		if ships_missed >= 1:
-			game_over()
+			game_over(winings)
 		
-		pygame.display.flip() #update the screen  with what we draw
+		pygame.display.update() #update the screen  with what we draw
 		clock.tick(80) #number of frames per second
-	
-	pygame.quit()
-
-	
-"""
-def main_menu():
-	background = pygame.image.load("images/starBackground.png").convert() #convert is a method of image class
-	background = pygame.transform.scale(background, (width,height)) #transforms small image to fit game window
-	text = font.render("StarShooter v.2", True, text_color)
-	text_rect = text.get_rect()
-	text_x = screen.get_width() / 2 - text_rect.width / 2
-	text_y = screen.get_height() / 2 - text_rect.height / 2
-	screen.blit(text, [text_x, text_y])
-	player_input = str(input("do you wanna play StarShooter y/n"))
-	if player_input == "y":
-		main_game(False)
-	elif player_input == "n":
-		main_game(True)
-	else:
-		game_over()
-"""
-
+		# pygame.quit()
 main_game(True)
+
+

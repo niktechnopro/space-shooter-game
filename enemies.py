@@ -32,7 +32,7 @@ class Enemies(Sprite):
 		self.x = random.randrange(10,730,100)
 		self.y = 10
 		self.screen = screen
-		self.speed = 2
+		self.speed = random.randrange(2,3,1)
 		#self.rect = self.image.get_rect()
 		self.rect = pygame.Rect(self.x, self.y, 90, 70)
 		self.ships_missed = 0
@@ -56,7 +56,6 @@ class Enemies(Sprite):
 
 	def beyond_screen(self):
 		if self.y >= 780:
-			self.ships_missed += 1
 			return True
 		return False
 
