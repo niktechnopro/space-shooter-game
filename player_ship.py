@@ -33,7 +33,7 @@ class Player(Sprite):
 		super(Player,self).__init__()
 		self.image = pygame.image.load(image)
 		self.image = pygame.transform.scale(self.image,(70,70))
-		self.x = start_y
+		self.x = start_x
 		self.y = start_y
 		self.screen = screen
 		self.rect = pygame.Rect(self.x, self.y, 70, 70)
