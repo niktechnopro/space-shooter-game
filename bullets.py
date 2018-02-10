@@ -5,10 +5,11 @@ class Bullet(Sprite):
 	def __init__(self,screen,the_player, bullet):
 		super(Bullet, self).__init__()
 		self.image = pygame.image.load(bullet)
+		#the following scales the bullets to be unisized
 		self.image = pygame.transform.scale(self.image, (20,50))
 		self.screen = screen
-		self.speed = 15
-		self.x = the_player.x + 25
+		self.speed = 25
+		self.x = the_player.x + self.speed
 		self.y = the_player.y
 		#self.rect = self.image.get_rect()
 		self.rect = pygame.Rect(self.x, self.y, 20, 50)

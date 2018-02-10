@@ -91,10 +91,10 @@ def print_text(msg, pos, _font, color = (0,0,0), bgcolor = (255,255,255)):
 
 #first page
 def showIntro():
-	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color, BLACK)
-	print_text("PRESS SPACE TO START!", (235, 500), font2, YELLOW, BLACK)
+	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color)
+	print_text("PRESS SPACE TO START!", (115, 500), font1, text_color)
 	print_text("Shoot as many enemy ships as you can", (140, 300), font2, YELLOW)
-	print_text("Press ESC to exit at any time", (400, 750), font3, text_color, BLACK)# these 2 lines display a text for wins in the right top side of screen
+	print_text("Press ESC to exit at any time", (400, 750), font3, text_color)# these 2 lines display a text for wins in the right top side of screen
 
 def music_effect(effect):  #function to pull up sound effects
 	wins = 0
@@ -120,6 +120,8 @@ def game_over(score):
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_ESCAPE:
 					quit()
+				if event.key == pygame.K_p:
+					print "hitting button P"#just a test for now
 			elif event.type == pygame.QUIT:
 				quit()
 		print_text("Game Over!", (280, 400), font1, text_color)
