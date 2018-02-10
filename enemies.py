@@ -28,11 +28,12 @@ class Enemies(Sprite):
 	def __init__(self, screen, image):
 		super(Enemies,self).__init__()
 		self.image = pygame.image.load(str(image))
+		#the following transforms bullet images to uniform size 
 		self.image = pygame.transform.scale(self.image, (70, 70))
 		self.x = random.randrange(10,730,100)
 		self.y = 10
 		self.screen = screen
-		self.speed = random.randrange(2,3,1)
+		self.speed = random.randrange(2,4)#that allows for variable speed among enemies
 		#self.rect = self.image.get_rect()
 		self.rect = pygame.Rect(self.x, self.y, 90, 70)
 		self.ships_missed = 0
@@ -47,11 +48,10 @@ class Enemies(Sprite):
 	def draw_me(self):
 		self.screen.blit(self.image,[self.x,self.y])
 
-	def explosions(self, bullet): #later on will go for coordinates( w, h ):
+	def explosions(self): #later on will go for coordinates( w, h ):
 		counter = 0
-		for i in range(0, 800):
-			if i%100 == 0:
-				counter += 1
+		for i in range(0, 8, 1):
+			counter += 1
 			self.screen.blit(explosion_list[counter], (self.x , self.y) )
 
 	def beyond_screen(self):

@@ -55,6 +55,8 @@ for i in range(random.randint(3, 9)):
 	enemy_list.add(enemy_ship)
 
 bullet_image = "images/spacebullet1.png"
+
+
 def bullet_selector(score):
 	if score < 10:
 		bullet_image = "images/spacebullet1.png"
@@ -172,7 +174,6 @@ def main_game(val):
 		pygame.mouse.set_visible(False) #to hide the mouse curser
 		the_player.update_me(player_pos)
 		
-	#	screen.blit(background, [0,0]):
 		#drawing and moving the background
 		moving_background(bckg_y)
 		bckg_y += 1
@@ -189,7 +190,6 @@ def main_game(val):
 				enemy_list.remove(enemy_ship)
 				print "ship missed"
 				
-
 		#bullet portion
 		for bullet in bullets:
 			# update teh bullet location
@@ -207,7 +207,7 @@ def main_game(val):
 		for bullet, enemy_ship in bullet_hit.iteritems():
 			print "explosion"
 			music_effect("explosion")
-			enemy_ship[0].explosions(bullet)
+			enemy_ship[0].explosions()
 			winings += 1
 			
 
@@ -215,8 +215,13 @@ def main_game(val):
 			enemy_list.add((Enemies(screen, enemy_ship_selector())))
 			enemy_list.add((Enemies(screen, enemy_ship_selector())))
 		
-		#ship_crash = groupcollide(player_group, enemy_list, True, True) #when enemy ship hits the player
-		#print ship_crash
+		player_crash = groupcollide(player_group, enemy_list, True, True) #when enemy ship hits the player
+		for player, enemy_ship in player_crash.iteritems():
+			print "player hit"
+			music_effect("explosion")
+			player.explosions()
+			game_over(winings)
+
 
 		print_text("Hits: " + str(winings), (600, 50), font, text_color)
 
@@ -228,7 +233,7 @@ def main_game(val):
 			game_over(winings)
 		
 		pygame.display.update() #update the screen  with what we draw
-		clock.tick(80) #number of frames per second
+		clock.tick(120) #number of frames per second
 		# pygame.quit()
 main_game(True)
 
