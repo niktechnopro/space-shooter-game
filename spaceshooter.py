@@ -33,7 +33,25 @@ the_player = Player("images/playerShip.png",350,700,screen)
 player_group = Group()
 player_group.add(the_player)
 
+#function to exit
+def quit():
+	pygame.quit()
+	sys.exit()
 
+#save record
+def saveRecord(score):
+	file = open('scores.txt', 'w')
+	file.write(str(score))
+	file.close()
+
+#load record
+def loadRecord():
+	file = open('scores.txt', 'r')
+	data = file.read()
+	file.close()
+	return data
+
+record = int(loadRecord())
 #loading all the ships
 enemyShip1 = "images/enemyShip.png"
 enemyShip2 = "images/enemyShip2.png"
@@ -58,11 +76,11 @@ bullet_image = "images/spacebullet1.png"
 
 
 def bullet_selector(score):
-	if score < 10:
+	if score < 8:
 		bullet_image = "images/spacebullet1.png"
-	elif score >=10 and score < 18:
+	elif score >=8 and score < 16:
 		bullet_image = "images/spacebullet2.png"
-	elif score >= 18 and score < 24:
+	elif score >= 16 and score < 24:
 		bullet_image = "images/spacebullet3.png"
 	else:
 		bullet_image = "images/spacebullet4.png"
@@ -94,7 +112,7 @@ def showIntro():
 	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color)
 	print_text("PRESS SPACE TO START!", (115, 500), font1, text_color)
 	print_text("Shoot as many enemy ships as you can", (140, 300), font2, YELLOW)
-	print_text("Press ESC to exit at any time", (400, 750), font3, text_color)# these 2 lines display a text for wins in the right top side of screen
+	print_text("Press ESC to exit at any time", (450, 750), font, text_color)
 
 def music_effect(effect):  #function to pull up sound effects
 	wins = 0
@@ -113,6 +131,8 @@ def moving_background(bckg_y):
 
 def game_over(score):
 	bckg_y = 0
+	if score > record:
+		saveRecord(score)	
 	while True:
 		moving_background(bckg_y)
 		bckg_y += 1
@@ -125,7 +145,8 @@ def game_over(score):
 			elif event.type == pygame.QUIT:
 				quit()
 		print_text("Game Over!", (280, 400), font1, text_color)
-		print_text("Your Score: " + str(score), (332, 500), font2, text_color)
+		print_text("Highest Score Achieved: " + str(record), (241, 500), font2, YELLOW)
+		print_text("Your Score: " + str(score), (332, 600), font2, text_color)
 		print_text("Press ESC to exit", (50, 50), font, text_color)
 		pygame.display.flip()
 	# main_game(False)
@@ -183,7 +204,7 @@ def main_game(val):
 		the_player.draw_me()
 		#screen.blit(enemy_ship, [100, 50])
 		for enemy_ship in enemy_list:
-	#		# update the bad guy (based on where the player is)
+			# update the bad guy (based on where the player is)
 			enemy_ship.update_me(the_player)
 			# draw the bad guy
 			enemy_ship.draw_me()
