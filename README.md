@@ -4,7 +4,7 @@
 ## It features:
 * mouse control
 * scrolling background effect
-* music
+* music and sound effects
 * high score save/read to/from a file
 * game pause
 
