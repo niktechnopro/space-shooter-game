@@ -5,7 +5,7 @@
 * mouse control
 * scrolling background effect
 * music and sound effects
-* high score save/read to/from a file
+* highest achieved score tracking
 * game pause
 
 ## The sprites and sound effects downloaded from 2 location that offer free resources:
