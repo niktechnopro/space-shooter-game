@@ -12,5 +12,5 @@
 ## This is a class project, so feel free to use and modify it
 
 ## Project Screenshot:
-![alt text](/images/spaceshooter.png "project screenshot")
+![alt text](/images/spaceshooter1.png "project screenshot")
 
