@@ -6,6 +6,7 @@
 * scrolling background effect
 * music and sound effects
 * highest achieved score tracking
+* variety of missiles
 * game pause
 
 ## The sprites and sound effects downloaded from 2 location that offer free resources:
