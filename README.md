@@ -2,10 +2,10 @@
 ## A space shooter game developped with Python programming language and the PyGame games development library
 
 ## It features:
-* mouse control,
-* scrolling background effect,
-* music,
-* high score save/read to/from a file,
+* mouse control
+* scrolling background effect
+* music
+* high score save/read to/from a file
 * game pause
 
 ## The sprites and sound effects downloaded from 2 location that offer free resources:
