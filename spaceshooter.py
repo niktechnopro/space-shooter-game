@@ -72,8 +72,8 @@ for i in range(random.randint(3, 9)):
 	 # this represents an enemy
 	enemy_list.add(enemy_ship)
 
+#initial bullet
 bullet_image = "images/spacebullet1.png"
-
 
 def bullet_selector(score):
 	if score < 8:
@@ -89,9 +89,6 @@ def bullet_selector(score):
 new_bullet = Bullet(screen, the_player, bullet_image)
 bullets = Group()
 
-
-pygame.mixer.music.load("sounds/music.wav") #load game music
-pygame.mixer.music.play(-1) #'-1' means play indefinetely
 
 blaster = pygame.mixer.Sound('sounds/blaster.wav')#using Sound class does not interrupt main music
 explosion = pygame.mixer.Sound('sounds/explosion.wav')
@@ -112,6 +109,7 @@ def showIntro():
 	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color)
 	print_text("PRESS SPACE TO START!", (115, 500), font1, text_color)
 	print_text("Shoot as many enemy ships as you can", (140, 300), font2, YELLOW)
+	print_text("Press 'P' to pause at any time", (200, 350), font2, YELLOW)
 	print_text("Press ESC to exit at any time", (450, 750), font, text_color)
 
 def music_effect(effect):  #function to pull up sound effects
@@ -140,8 +138,6 @@ def game_over(score):
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_ESCAPE:
 					quit()
-				if event.key == pygame.K_p:
-					print "hitting button P"#just a test for now
 			elif event.type == pygame.QUIT:
 				quit()
 		print_text("Game Over!", (280, 400), font1, text_color)
@@ -151,6 +147,23 @@ def game_over(score):
 		pygame.display.flip()
 	# main_game(False)
 
+def pause():
+	print "pause activated"
+	pause = True
+	while pause:
+		print_text("Game Paused", (240, 400), font1, text_color)
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_p:
+					return
+				if event.key == pygame.K_ESCAPE:
+					quit()
+			elif event.type == pygame.QUIT:
+				quit()
+		pygame.display.update()
+		clock.tick(20)
+
+
 	
 #First page loop
 intro = True
@@ -158,19 +171,20 @@ while intro:
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE:
-				print "space was pressed"
+				print "space pressed"
 				intro = False
 			if event.key == pygame.K_ESCAPE:
 				quit()
 		elif event.type == pygame.QUIT:
 			quit()
-	# bgGen()
 	moving_background(bckg_y)
 	bckg_y += 1
 	showIntro()
 	pygame.display.flip()
 
-
+# loading game music
+pygame.mixer.music.load("sounds/music.wav") #load game music
+pygame.mixer.music.play(-1) #'-1' means play indefinetely
 #Main Loop
 def main_game(val):
 #	variables used in this function
@@ -186,7 +200,11 @@ def main_game(val):
 				done = True # to exit this loop
 			elif event.type == pygame.KEYDOWN:
 				if event.key == K_ESCAPE:
-					sys.exit()
+					# sys.exit()
+					quit()
+				if event.key == pygame.K_p:
+					print "hitting button P"#just a test for now
+					pause()
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				music_effect("blaster")
 				new_bullet = Bullet(screen, the_player, bullet_selector(winings))
@@ -196,7 +214,7 @@ def main_game(val):
 		player_pos = pygame.mouse.get_pos()
 		pygame.mouse.set_visible(False) #to hide the mouse curser
 		the_player.update_me(player_pos)
-		
+
 		#drawing and moving the background
 		moving_background(bckg_y)
 		bckg_y += 1
@@ -256,8 +274,8 @@ def main_game(val):
 			game_over(winings)
 		
 		pygame.display.update() #update the screen  with what we draw
-		clock.tick(120) #number of frames per second
-		# pygame.quit()
-main_game(True)
+		clock.tick(60) #number of frames per second
+
+main_game(True)#keeping the main game loop running
 
 
