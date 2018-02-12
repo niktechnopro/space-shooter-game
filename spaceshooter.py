@@ -107,9 +107,12 @@ def print_text(msg, pos, _font, color = (0,0,0), bgcolor = (255,255,255)):
 #first page
 def showIntro():
 	print_text("WELCOME TO SPACESHOOTER", (40, 100), font1, text_color)
-	print_text("PRESS SPACE TO START!", (115, 500), font1, text_color)
-	print_text("Shoot as many enemy ships as you can", (140, 300), font2, YELLOW)
-	print_text("Press 'P' to pause at any time", (200, 350), font2, YELLOW)
+	print_text("PRESS SPACE TO START!", (115, 550), font1, text_color)
+	print_text("Shoot as many enemy ships as you can", (140, 200), font2, YELLOW)
+	print_text("Press 'P' to pause at any time", (200, 250), font2, text_color)
+	print_text("Game Over if:", (140, 350), font2, YELLOW)
+	print_text("* One enemy ship passes you", (140, 400), font2, YELLOW)
+	print_text("* Enemy ships collides with you", (140, 450), font2, YELLOW)
 	print_text("Press ESC to exit at any time", (450, 750), font, text_color)
 
 def music_effect(effect):  #function to pull up sound effects
@@ -161,7 +164,7 @@ def pause():
 			elif event.type == pygame.QUIT:
 				quit()
 		pygame.display.update()
-		clock.tick(20)
+		clock.tick(15)
 
 
 	
@@ -180,7 +183,8 @@ while intro:
 	moving_background(bckg_y)
 	bckg_y += 1
 	showIntro()
-	pygame.display.flip()
+	pygame.display.update()
+	clock.tick(15)
 
 # loading game music
 pygame.mixer.music.load("sounds/music.wav") #load game music
@@ -274,7 +278,7 @@ def main_game(val):
 			game_over(winings)
 		
 		pygame.display.update() #update the screen  with what we draw
-		clock.tick(60) #number of frames per second
+		clock.tick(40) #number of frames per second
 
 main_game(True)#keeping the main game loop running
 
