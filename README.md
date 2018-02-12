@@ -12,5 +12,7 @@
 ## This is a class project, so feel free to use and modify it
 
 ## Project Screenshot:
-![alt text](/images/spaceshooter1.png "project screenshot")
+![front menu](/images/spaceshooter1.png "project screenshot")
+![main game](/images/spaceshooter2.png "project screenshot")
+![game over](/images/spaceshooter3.png "project screenshot")
 
