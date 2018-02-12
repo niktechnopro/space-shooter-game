@@ -111,8 +111,8 @@ def showIntro():
 	print_text("Shoot as many enemy ships as you can", (140, 200), font2, YELLOW)
 	print_text("Press 'P' to pause at any time", (200, 250), font2, text_color)
 	print_text("Game Over if:", (140, 350), font2, YELLOW)
-	print_text("* One enemy ship passes you", (140, 400), font2, YELLOW)
-	print_text("* Enemy ships collides with you", (140, 450), font2, YELLOW)
+	print_text("* You miss one enemy ship", (140, 400), font2, YELLOW)
+	print_text("* Enemy ship collides with you", (140, 450), font2, YELLOW)
 	print_text("Press ESC to exit at any time", (450, 750), font, text_color)
 
 def music_effect(effect):  #function to pull up sound effects
